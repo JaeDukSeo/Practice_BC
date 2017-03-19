@@ -232,15 +232,22 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 	fmt.Println("invoke is running " + function)
 
-	// Handle different functions
-	if function == "init" {
-		return t.Init(stub, "init", args)
-	} else if function == "write" {
-		return t.write(stub, args)
-	}
-	fmt.Println("invoke did not find func: " + function)
 
-	return nil, errors.New("Received unknown function invocation: " + function)
+    var personalInfo PersonalInfo
+	personalInfo = PersonalInfo{"Varun", "Ojha", "dob", "varun@gmail.com", "9999999999"}
+	bytes, err := json.Marshal (&personalInfo)
+	fmt.Println(err)
+	return bytes,nil
+
+	// // Handle different functions
+	// if function == "init" {
+	// 	return t.Init(stub, "init", args)
+	// } else if function == "write" {
+	// 	return t.write(stub, args)
+	// }
+	// fmt.Println("invoke did not find func: " + function)
+
+	// return nil, errors.New("Received unknown function invocation: " + function)
 }
 
 
