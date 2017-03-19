@@ -214,7 +214,7 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 	// Handle different functions
 	if function == "read" { 
 		//read a variable - function = read , args - given in string argument
-		return nil, errors.New("This is not an error!!!! \nMy First Block Chain Application to update ledger!!")
+		return nil, errors.New("This is not an error!!!! \nMy First Block Chain dsadsa ledger!!")
 	 //    var personalInfo PersonalInfo
 		// personalInfo = PersonalInfo{"Varun", "Ojha", "dob", "varun@gmail.com", "9999999999"}
 		// bytes, err := json.Marshal (&personalInfo)
