@@ -134,7 +134,15 @@ import (
 	"errors"
 	"fmt"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
+	 "encoding/json"
 )
+type PersonalInfo struct {
+	Firstname string `json:"firstname"`
+	Lastname  string `json:"lastname"`
+	DOB       string `json:"DOB"`
+	Email     string `json:"email"`
+	Mobile    string `json:"mobile"`
+}
 
 // SimpleChaincode example simple Chaincode implementation
 type SimpleChaincode struct {
@@ -151,8 +159,8 @@ func (t *SimpleChaincode) read(stub shim.ChaincodeStubInterface, args []string) 
 	}
 
 	// Get the key - the first element of the arg
-	key = args[0]
-	valAsbytes, err := stub.GetState(key)
+	// key = args[0]
+	// valAsbytes, err := stub.GetState(key)
 
 	if err != nil {
 		jsonResp = "{\"Error\":\"Failed to get state for " + key + "\"}"
@@ -160,7 +168,12 @@ func (t *SimpleChaincode) read(stub shim.ChaincodeStubInterface, args []string) 
 	}
 	jsonResp = "{\"Error\":\"Failed to get state for " + key + "\"}"
 
-	return valAsbytes, nil
+    var personalInfo PersonalInfo
+ 	personalInfo = PersonalInfo{"Varun", "Ojha", "dob", "varun@gmail.com", "9999999999"}
+ 	bytes, err := json.Marshal (&personalInfo)
+
+
+	return bytes, nil
 }
 
 // write - invoke function to write key/value pair
@@ -203,8 +216,8 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 	// Handle different functions
 	if function == "read" { 
 		//read a variable - function = read , args - given in string argument
-		return nil, errors.New("This is not an error!!!! \nMy First Block Chain Application to update ledger!!")
-		// return t.read(stub, args)
+		// return nil, errors.New("This is not an error!!!! \nMy First Block Chain Application to update ledger!!")
+		return t.read(stub, args)
 	}
 
 	return nil, errors.New("Received unknown function query: " + function)
