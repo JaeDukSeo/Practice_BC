@@ -211,17 +211,17 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 // Query is our entry point for queries
 func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 
-	// Handle different functions
-	if function == "read" { 
-		//read a variable - function = read , args - given in string argument
-		return nil, errors.New("This is not an error!!!! \nMy First Block Chain dsadsa ledger!!")
-	 //    var personalInfo PersonalInfo
-		// personalInfo = PersonalInfo{"Varun", "Ojha", "dob", "varun@gmail.com", "9999999999"}
-		// bytes, err := json.Marshal (&personalInfo)
-		// fmt.Println(err)
-		// return bytes,nil
-		// return t.read(stub, args)
-	}
+	// // Handle different functions
+	// if function == "read" { 
+	// 	//read a variable - function = read , args - given in string argument
+	// 	return nil, errors.New("This is not an error!!!! \nMy First Block Chain dsadsa ledger!!")
+	//  //    var personalInfo PersonalInfo
+	// 	// personalInfo = PersonalInfo{"Varun", "Ojha", "dob", "varun@gmail.com", "9999999999"}
+	// 	// bytes, err := json.Marshal (&personalInfo)
+	// 	// fmt.Println(err)
+	// 	// return bytes,nil
+	// 	// return t.read(stub, args)
+	// }
 
 	return nil, errors.New("Received unknown function query: " + function)
 }
