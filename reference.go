@@ -131,7 +131,7 @@ limitations under the License.
 package main
 
 import (
-	"errors"
+	// "errors"
 	"fmt"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	 "encoding/json"
@@ -148,107 +148,35 @@ type PersonalInfo struct {
 type SimpleChaincode struct {
 }
 
-
-// read - query function to read key/value pair
-func (t *SimpleChaincode) read(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
-	// var key, jsonResp string
-	// var err error
-
-	if len(args) != 1 {
-		return nil, errors.New("Incorrect number of arguments. Expecting name of the key to query")
-	}
-
-	// Get the key - the first element of the arg
-	// key = args[0]
-	// valAsbytes, err := stub.GetState(key)
-
-	// if err != nil {
-	// 	jsonResp = "{\"Error\":\"Failed to get state for " + key + "\"}"
-	// 	return nil, errors.New(jsonResp)
-	// }
-
-    var personalInfo PersonalInfo
+ 
+func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
+	var personalInfo PersonalInfo
  	personalInfo = PersonalInfo{"Varun", "Ojha", "dob", "varun@gmail.com", "9999999999"}
  	bytes, err := json.Marshal (&personalInfo)
-
-	return bytes, err
+ 	fmt.Println(err)
+    return bytes, nil
 }
-
-// write - invoke function to write key/value pair
-func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
-	var key, value string
-	var err error
-	fmt.Println("running write()")
-
-	if len(args) != 2 {
-		return nil, errors.New("Incorrect number of arguments. Expecting 2. name of the key and value to set")
-	}
-
-	key = args[0] //rename for funsies
-	value = args[1]
-	err = stub.PutState(key, []byte(value)) //write the variable into the chaincode state
-	if err != nil {
-		return nil, err
-	}
-	return nil, nil
-}
-
-
-// Init resets all the things
-func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
-	if len(args) != 1 {
-		return nil, errors.New("Incorrect number of arguments. Expecting 1")
-	}
-
-	err := stub.PutState("hello_world", []byte(args[0]))
-	if err != nil {
-		return nil, err
-	}
-
-	return nil, nil
-}
-
-// Query is our entry point for queries
+ 
 func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
-
-	// // Handle different functions
-	if function == "get" { 
-		//read a variable - function = read , args - given in string argument
-		// return nil, errors.New("This is not an error!!!! \nMy First Block Chain dsadsa ledger!!")
-	    var personalInfo PersonalInfo
-		personalInfo = PersonalInfo{"Varun", "Ojha", "dob", "varun@gmail.com", "9999999999"}
-		bytes, err := json.Marshal (&personalInfo)
-		fmt.Println(err)
-		return bytes,nil
-		// return t.read(stub, args)
-	}
-
-	return nil, errors.New("Received unknown function query: " + function)
+ 	var personalInfo PersonalInfo
+ 	personalInfo = PersonalInfo{"Varun", "Ojha", "dob", "varun@gmail.com", "9999999999"}
+ 	bytes, err := json.Marshal (&personalInfo)
+ 	fmt.Println(err)
+    return bytes, nil
 }
-
-
-// Invoke isur entry point to invoke a chaincode function
-// Change the application and the key value - update the ledger
+ 
 func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
-
-	// Handle different functions
-	if function == "init" {
-		return t.Init(stub, "init", args)
-	} else if function == "write" {
-		return t.write(stub, args)
-	}
-	fmt.Println("invoke did not find func: " + function)
-
-	return nil, errors.New("Received unknown function invocation: " + function)
+    return nil, nil
 }
-
-
 
 func main() {
-	err := shim.Start(new(SimpleChaincode))
-	if err != nil {
-		fmt.Printf("Error starting Simple chaincode: %s", err)
-	}
+    err := shim.Start(new(SimpleChaincode))
+    if err != nil {
+        fmt.Println("Could not start SimpleChaincode")
+    } else {
+        fmt.Println("SimpleChaincode successfully started")
+    }
+ 
 }
 
 
