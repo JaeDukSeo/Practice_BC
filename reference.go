@@ -212,16 +212,16 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 
 	// // Handle different functions
-	// if function == "read" { 
-	// 	//read a variable - function = read , args - given in string argument
-	// 	return nil, errors.New("This is not an error!!!! \nMy First Block Chain dsadsa ledger!!")
-	//  //    var personalInfo PersonalInfo
-	// 	// personalInfo = PersonalInfo{"Varun", "Ojha", "dob", "varun@gmail.com", "9999999999"}
-	// 	// bytes, err := json.Marshal (&personalInfo)
-	// 	// fmt.Println(err)
-	// 	// return bytes,nil
-	// 	// return t.read(stub, args)
-	// }
+	if function == "get" { 
+		//read a variable - function = read , args - given in string argument
+		// return nil, errors.New("This is not an error!!!! \nMy First Block Chain dsadsa ledger!!")
+	    var personalInfo PersonalInfo
+		personalInfo = PersonalInfo{"Varun", "Ojha", "dob", "varun@gmail.com", "9999999999"}
+		bytes, err := json.Marshal (&personalInfo)
+		fmt.Println(err)
+		return bytes,nil
+		// return t.read(stub, args)
+	}
 
 	return nil, errors.New("Received unknown function query: " + function)
 }
@@ -230,24 +230,16 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 // Invoke isur entry point to invoke a chaincode function
 // Change the application and the key value - update the ledger
 func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
-	fmt.Println("invoke is running " + function)
 
+	// Handle different functions
+	if function == "init" {
+		return t.Init(stub, "init", args)
+	} else if function == "write" {
+		return t.write(stub, args)
+	}
+	fmt.Println("invoke did not find func: " + function)
 
-    var personalInfo PersonalInfo
-	personalInfo = PersonalInfo{"Varun", "Ojha", "dob", "varun@gmail.com", "9999999999"}
-	bytes, err := json.Marshal (&personalInfo)
-	fmt.Println(err)
-	return bytes,nil
-
-	// // Handle different functions
-	// if function == "init" {
-	// 	return t.Init(stub, "init", args)
-	// } else if function == "write" {
-	// 	return t.write(stub, args)
-	// }
-	// fmt.Println("invoke did not find func: " + function)
-
-	// return nil, errors.New("Received unknown function invocation: " + function)
+	return nil, errors.New("Received unknown function invocation: " + function)
 }
 
 
